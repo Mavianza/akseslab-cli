@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "roles": {
+    "asisten": [],
+    "koordinator": ["asisten"],
+    "wali": []
+  },
+  "resources": {
+    "dokumen": ["baca", "ubah"],
+    "pengumuman": ["baca"]
+  },
+  "rules": [
+    {"id": "asisten-baca-unit", "effect": "allow", "roles": ["asisten"], "resource": "dokumen", "actions": ["baca"], "when": {"sameUnit": true}},
+    {"id": "koordinator-ubah-unit", "effect": "allow", "roles": ["koordinator"], "resource": "dokumen", "actions": ["ubah"], "when": {"sameUnit": true}},
+    {"id": "pengumuman-umum", "effect": "allow", "roles": ["*"], "resource": "pengumuman", "actions": ["baca"]},
+    {"id": "wali-baca-milik", "effect": "allow", "roles": ["wali"], "resource": "dokumen", "actions": ["baca"], "when": {"owner": true}}
+  ],
+  "checks": [
+    {"id": "koordinator-ubah-unit", "expect": "allow", "resource": "dokumen", "actions": ["ubah"], "subject": {"allRoles": ["koordinator"]}, "when": {"sameUnit": true}},
+    {"id": "publik-baca-pengumuman", "expect": "allow", "resource": "pengumuman", "actions": ["baca"], "subject": {"anonymous": true}},
+    {"id": "publik-tolak-dokumen", "expect": "deny", "resource": "dokumen", "actions": ["baca", "ubah"], "subject": {"anonymous": true}},
+    {"id": "wali-baca-sendiri", "expect": "allow", "resource": "dokumen", "actions": ["baca"], "subject": {"allRoles": ["wali"]}, "when": {"owner": true}},
+    {"id": "wali-tolak-dokumen-lain", "expect": "deny", "resource": "dokumen", "actions": ["baca"], "subject": {"allRoles": ["wali"]}, "when": {"owner": false}}
+  ]
+}

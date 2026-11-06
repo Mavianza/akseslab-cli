@@ -1,0 +1,14 @@
+{
+  "name": "akseslab-cli",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Simulator dan auditor kebijakan akses berbasis role",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test",
+    "demo": "node src/cli.js audit examples/kebijakan-aman.json"
+  }
+}
